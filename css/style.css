@@ -38,20 +38,31 @@ a {
   transition: var(--transition);
 }
 
-/* Header & Nav */
+/* Закріплена шапка */
 header {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: rgba(14, 16, 19, 0.9);
+  background: rgba(14, 16, 19, 0.94);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-light);
   padding: 16px 6%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: transform 0.35s ease, background 0.3s ease;
+}
+
+/* Стан, коли користувач гортає вниз: шапка плавно виїжджає за межі екрана */
+header.header-hidden {
+  transform: translateY(-100%);
+}
+
+/* Відступ для окремих сторінок номерів, щоб фіксована шапка не перекривала заголовок */
+.single-room-header {
+  padding-top: 100px !important;
 }
 
 .logo {
@@ -209,28 +220,84 @@ nav a:hover, nav a.active {
   gap: 30px;
 }
 
+/* Базовий стан карток: злегка приглушені */
 .room-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: 6px;
+  flex: 0 0 340px;
+  max-width: 340px;
+  background: #14171c;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: var(--transition);
+  opacity: 0.55;
+  filter: brightness(0.75);
+  transform: scale(0.94);
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1),
+              opacity 0.3s ease,
+              filter 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+  z-index: 1;
 }
 
-.room-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--border-gold);
-  box-shadow: var(--shadow);
+/* СТАН ПРИ НАВЕДЕННІ ТА АКТИВНОМУ ВИБОРІ */
+.room-card:hover,
+.room-card.active-room {
+  opacity: 1 !important;
+  filter: brightness(1.05) !important;
+  transform: scale(1.04) translateY(-10px) !important;
+  border: 2px solid #f3ba63 !important; /* Яскраве тепле золото */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7),
+              0 0 25px rgba(243, 186, 99, 0.5),
+              0 0 50px rgba(243, 186, 99, 0.2) !important;
+  z-index: 10 !important;
 }
 
-.room-card img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
+/* Підсвічування назви та кнопки на вибраній картці */
+.room-card:hover h3,
+.room-card.active-room h3 {
+  color: #f3ba63 !important;
 }
 
+.room-card:hover .btn-outline,
+.room-card.active-room .btn-outline {
+  background: #f3ba63 !important;
+  color: #0e1013 !important;
+  font-weight: 600 !important;
+  border-color: #f3ba63 !important;
+  box-shadow: 0 0 15px rgba(243, 186, 99, 0.4);
+}
+
+/* Нижні індикатори */
+.slider-dots {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.slider-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: #4a4f56;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slider-dot:hover {
+  background-color: #8c939e;
+}
+
+/* Активна смужка-пігулка */
+.slider-dot.active {
+  width: 32px;
+  height: 9px;
+  border-radius: 10px;
+  background-color: #e06830 !important; /* Насичений теракот, як на фото */
+  box-shadow: 0 0 12px rgba(224, 104, 48, 0.6);
+}
 .room-card-body {
   padding: 24px;
   display: flex;
@@ -531,20 +598,21 @@ html {
 .rooms-slider-container {
   position: relative;
   width: 100%;
-  overflow: hidden;
+  overflow: visible; /* Дозволяє світінню не обрізатися */
 }
 
-/* Трек со свободным скроллом */
+/* Трек: додаємо запасний padding зверху і знизу, щоб картки не врізалися у верхній текст */
 .rooms-track {
   display: flex;
-  gap: 24px;
+  gap: 26px;
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding: 10px 4px 25px 4px;
+  padding: 30px 20px 35px 20px; /* Запас простору під збільшену картку */
   cursor: grab;
   user-select: none;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  align-items: center; /* Рівне центрування по вертикалі */
 }
 
 .rooms-track:active {
@@ -555,43 +623,64 @@ html {
   display: none;
 }
 
-/* Фиксированная ширина карточки в ряду */
+/* Базовий стан карток */
 .room-card {
   flex: 0 0 340px;
   max-width: 340px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-light);
-  border-radius: 8px;
+  background: #14171c;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s ease, border-color 0.25s ease;
+  opacity: 0.55;
+  filter: brightness(0.75);
+  transform: scale(0.95);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+              opacity 0.3s ease,
+              filter 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
+  z-index: 1;
 }
 
-.room-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--border-gold);
+/* АКТИВНА КАРТКА: збільшується пропорційно БЕЗ зміщення вгору (translateY прибрано) */
+.room-card:hover,
+.room-card.active-room {
+  opacity: 1 !important;
+  filter: brightness(1) !important;
+  transform: scale(1.03) !important; /* Лише плавне рівномірне збільшення */
+  border: 2px solid #f3ba63 !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7),
+              0 0 25px rgba(243, 186, 99, 0.45) !important;
+  z-index: 5 !important;
 }
 
-.room-card img {
-  width: 100%;
-  height: 380px;
-  object-fit: cover;
-  pointer-events: none; /* Чтобы картинка не мешала перетаскиванию */
+.room-card:hover h3,
+.room-card.active-room h3 {
+  color: #f3ba63 !important;
 }
 
-/* Блок навигации со стрелками и точками */
+.room-card:hover .btn-outline,
+.room-card.active-room .btn-outline {
+  background: #f3ba63 !important;
+  color: #0e1013 !important;
+  font-weight: 600 !important;
+  border-color: #f3ba63 !important;
+}
+
+/* Нижні кнопки і точки */
 .slider-controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  margin-top: 20px;
+  gap: 18px;
+  margin-top: 15px;
 }
 
 .slider-btn {
-  width: 48px;
-  height: 48px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: #2a2d32;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -611,27 +700,33 @@ html {
   transform: scale(1.05);
 }
 
-/* Индикаторы */
 .slider-dots {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-height: 14px;
 }
 
 .slider-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #65696f;
+  background-color: #4a4f56;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
+.slider-dot:hover {
+  background-color: #8c939e;
+}
+
+/* Активна видовжена смужка */
 .slider-dot.active {
   width: 28px;
   height: 8px;
   border-radius: 10px;
-  background-color: #9c4a2a; /* Теплый терракотовый цвет */
+  background-color: #e06830 !important;
+  box-shadow: 0 0 10px rgba(224, 104, 48, 0.6);
 }
 
 @media (max-width: 600px) {
@@ -718,4 +813,345 @@ html {
 /* При наведенні курсора повертається звичайний колір карти */
 .map-wrapper:hover iframe {
   filter: none;
+}
+/* Адреса в шапці сайту */
+.header-address {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  transition: var(--transition);
+}
+
+.header-address:hover {
+  border-color: var(--accent-gold);
+  background: rgba(197, 168, 128, 0.08);
+  transform: translateY(-1px);
+}
+
+.header-address-icon {
+  font-size: 1.1rem;
+}
+
+.header-address-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.header-address-city {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  letter-spacing: 0.5px;
+}
+
+.header-address-street {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .header-address-street {
+    display: none; /* На маленьких телефонах ховаємо вулицю, лишаємо "📍 м. Яремче" */
+  }
+}
+/* ========================================================
+   ПОВНА АДАПТАЦІЯ ПІД МОБІЛЬНІ ПРИСТРОЇ ТА ПЛАНШЕТИ
+   ======================================================== */
+
+/* Захист від горизонтального зміщення сторінки */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* 1. Планшети та компактні ноутбуки (до 1024px) */
+@media (max-width: 1024px) {
+  header {
+    padding: 14px 4%;
+  }
+
+  .section {
+    padding: 60px 4%;
+  }
+
+  .room-detail-layout {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 0 4% 60px;
+  }
+
+  .room-gallery-main {
+    min-height: 440px;
+    max-height: 500px;
+  }
+}
+
+/* 2. Смартфони (до 768px) */
+@media (max-width: 768px) {
+  /* Шапка */
+  header {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .logo-title {
+    font-size: 1.15rem;
+  }
+
+  .logo-sub {
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+  }
+
+  /* Компактна плашка адреси поруч із логотипом */
+  .header-address {
+    padding: 4px 10px;
+    gap: 6px;
+  }
+
+  .header-address-street {
+    display: none; /* Залишаємо лише "📍 м. Яремче" */
+  }
+
+  .header-address-city {
+    font-size: 0.7rem;
+  }
+
+  /* Навігація в шапці ховається, кнопка дзвінка/броні стає компактною */
+  nav {
+    display: none;
+  }
+
+  header .btn-gold {
+    padding: 8px 16px;
+    font-size: 0.75rem;
+    margin-left: auto;
+  }
+
+  /* Головний екран (Hero) */
+  .hero {
+    min-height: 85vh;
+    padding: 80px 16px 40px;
+  }
+
+  .hero-content h1 {
+    font-size: 2.1rem;
+    line-height: 1.25;
+    margin: 12px 0 16px;
+  }
+
+  .hero-content p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  /* Секції */
+  .section {
+    padding: 50px 16px;
+  }
+
+  .section-title {
+    margin-bottom: 30px;
+  }
+
+  .section-title h2 {
+    font-size: 1.65rem;
+  }
+
+  .section-title p {
+    font-size: 0.75rem;
+  }
+
+  /* Зручності: акуратна сітка 2 колонки */
+  .amenities-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .amenity-card {
+    padding: 20px 12px;
+  }
+
+  .amenity-icon {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+
+  .amenity-card h4 {
+    font-size: 0.85rem;
+  }
+
+  /* Слайдер номерів */
+  .rooms-track {
+    padding: 15px 16px 20px 16px;
+    gap: 16px;
+  }
+
+  .room-card {
+    flex: 0 0 84vw; /* Видно 84% картки + край наступної для інтуїтивного свайпу */
+    max-width: 84vw;
+    transform: scale(0.96);
+  }
+
+  .room-card.active-room {
+    transform: scale(1) !important;
+  }
+
+  .room-card img {
+    height: 280px; /* Зменшена висота, щоб картка вміщалася на екран смартфона */
+  }
+
+  .room-card-body {
+    padding: 18px 16px;
+  }
+
+  .room-card-body h3 {
+    font-size: 1.15rem;
+  }
+
+  .slider-controls {
+    margin-top: 10px;
+    gap: 14px;
+  }
+
+  .slider-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 0.95rem;
+  }
+
+  .slider-dot {
+    width: 7px;
+    height: 7px;
+  }
+
+  .slider-dot.active {
+    width: 22px;
+    height: 7px;
+  }
+
+  /* Прайс-лист у вигляді мобільних карток */
+  .pricing-table-wrapper,
+  .table-responsive {
+    overflow: visible;
+  }
+
+  .custom-table thead {
+    display: none;
+  }
+
+  .custom-table,
+  .custom-table tbody,
+  .custom-table tr,
+  .custom-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .custom-table tr {
+    background: #171a20;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+
+  .custom-table td:first-child {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 0 0 10px 0;
+    margin-bottom: 10px;
+  }
+
+  .custom-table td:nth-child(2),
+  .custom-table td:nth-child(3) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 8px 10px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+    border: none;
+    font-size: 0.85rem;
+  }
+
+  .custom-table td:nth-child(2)::before {
+    content: "ПН–ЧТ (2+ / 1 доба):";
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+
+  .custom-table td:nth-child(3)::before {
+    content: "ПТ–НД (2+ / 1 доба):";
+    color: var(--accent-gold);
+    font-size: 0.75rem;
+  }
+
+  /* Окремі сторінки номера */
+  .single-room-header {
+    padding: 24px 16px 12px;
+  }
+
+  .single-room-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .room-detail-layout {
+    padding: 0 16px 40px;
+  }
+
+  .room-detail-layout > div:first-child {
+    max-height: 380px;
+  }
+
+  .room-gallery-main {
+    min-height: 320px;
+    height: 320px;
+    border-radius: 6px;
+  }
+
+  .room-specs {
+    padding: 20px 16px;
+  }
+
+  .specs-title {
+    font-size: 1.3rem;
+  }
+
+  .booking-box {
+    padding: 16px 14px;
+  }
+
+  /* Запобігання авто-зуму форми на iOS (шрифт обов'язково 16px) */
+  .form-control,
+  input[type="text"],
+  input[type="tel"],
+  input[type="date"],
+  select {
+    font-size: 16px !important;
+    padding: 11px 12px;
+  }
+
+  /* Модальне вікно */
+  .modal-content {
+    width: 94%;
+    padding: 24px 18px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  /* Футер та карта */
+  .footer-grid {
+    gap: 25px;
+  }
+
+  .map-wrapper iframe {
+    height: 200px;
+  }
 }
