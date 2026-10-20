@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guculka Apartments | Готель у Яремче</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <span class="logo-title font-serif">Guculka</span>
+      <span class="logo-sub">Apartments • Готель</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#about">Про нас</a></li>
+        <li><a href="#amenities">Зручності</a></li>
+        <li><a href="#rooms">Номери</a></li>
+        <li><a href="#pricing">Ціни</a></li>
+        <li><a href="#contacts">Контакти</a></li>
+      </ul>
+    </nav>
+    <button class="btn-gold" onclick="openBookingModal()">Забронювати</button>
+  </header>
+
+  <section class="hero" id="about" style="background: linear-gradient(rgba(14, 16, 19, 0.5), rgba(14, 16, 19, 0.85)), url('img/guculka.png') center/cover no-repeat;">
+    <div class="hero-content">
+      <p style="color: var(--accent-gold); letter-spacing: 3px; text-transform: uppercase;">м. Яремче, Карпати</p>
+      <h1 class="font-serif">Guculka Apartments</h1>
+      <p>Преміальний відпочинок у серці Карпат. Затишні автентичні шале, просторі апартаменти та чан посеред гірських краєвидів.</p>
+      <a href="#rooms" class="btn-gold" style="margin-top: 15px;">Обрати номер</a>
+    </div>
+  </section>
+
+  <section class="section" id="amenities">
+    <div class="section-title">
+      <p>Комфорт без компромісів</p>
+      <h2>Зручності на території</h2>
+    </div>
+    <div class="amenities-grid">
+      <div class="amenity-card">
+        <div class="amenity-icon">🏊‍♂️</div>
+        <h4>Інфініті басейн</h4>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Сезонний відкритий басейн із шезлонгами</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🪵</div>
+        <h4>Чавунний чан</h4>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Оздоровчий відпочинок на дровах</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🍳</div>
+        <h4>Сніданки та кафе</h4>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Смачні сніданки щоранку за меню</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🌄</div>
+        <h4>Панорамні тераси</h4>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Захоплюючий краєвид на гори Яремче</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🚗</div>
+        <h4>Парковка</h4>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Безкоштовна приватна стоянка для гостей</p>
+      </div>
+      <div class="amenity-card">
+        <div class="amenity-icon">🥩</div>
+        <h4>Мангальна зона</h4>
+        <p style="font-size:0.8rem; color:var(--text-muted); margin-top:5px;">Усе необхідне для вечірнього барбекю</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Каталог номерів у вигляді слайдера -->
+  <!-- Каталог номерів (тільки горизонтальний слайдер) -->
+  <section class="section" id="rooms" style="background: var(--bg-alt); padding-bottom: 70px;">
+    <div class="section-title">
+      <p>Каталог розміщення</p>
+      <h2>Наші апартаменти та шале</h2>
+    </div>
+
+    <div class="slider-hint">ПОТЯГНІТЬ, ЩОБ ГОРТАТИ</div>
+
+    <div class="rooms-slider-container">
+      <div class="rooms-track" id="roomsTrack">
+
+        <!-- 1. Стандарт -->
+        <div class="room-card">
+          <img src="img/standar.jpg" alt="Номер Стандарт">
+          <div class="room-card-body">
+            <h3>Номер «Стандарт»</h3>
+            <div class="room-capacity">👥 Вміщує: 2 дорослих</div>
+            <p class="room-desc">Затишний світлий номер, санвузол, Smart TV, холодильник, чайник, Wi-Fi.</p>
+            <div class="room-card-footer">
+              <div class="price-tag">від 2 600 ₴ <span>/ доба</span></div>
+              <a href="standart.html" class="btn-outline">Детальніше</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Мансарда -->
+        <div class="room-card">
+          <img src="img/man.jpg" alt="Номер Мансарда">
+          <div class="room-card-body">
+            <h3>Номер «Мансарда»</h3>
+            <div class="room-capacity">👥 Вміщує: 2 дорослих + 2 дітей</div>
+            <p class="room-desc">Дворівневий номер з дерев'яними балками, спальним ярусом для дітей, Wi-Fi.</p>
+            <div class="room-card-footer">
+              <div class="price-tag">від 3 100 ₴ <span>/ доба</span></div>
+              <a href="mansarda.html" class="btn-outline">Детальніше</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Шале з каміном -->
+        <div class="room-card">
+          <img src="img/shale.jpg" alt="Шале з однією спальнею">
+          <div class="room-card-body">
+            <h3>Шале з каміном (1 спальня)</h3>
+            <div class="room-capacity">👥 До 4 дорослих + 1 дитина</div>
+            <p class="room-desc">Кухня-студія з дров'яним каміном, панорамний балкон на гори, 2 санвузли.</p>
+            <div class="room-card-footer">
+              <div class="price-tag">від 4 200 ₴ <span>/ доба</span></div>
+              <a href="shale-1spal.html" class="btn-outline">Детальніше</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Шале з 2 спальнями -->
+        <div class="room-card">
+          <img src="img/2shale.jpg" alt="Шале з двома спальнями">
+          <div class="room-card-body">
+            <h3>Шале з двома спальнями</h3>
+            <div class="room-capacity">👥 6 дорослих + 2 дітей</div>
+            <p class="room-desc">Дерев'яне шале зі зрубу, тераса, 2 санвузли, балкони в обох спальнях.</p>
+            <div class="room-card-footer">
+              <div class="price-tag">від 5 800 ₴ <span>/ доба</span></div>
+              <a href="shale-2spal.html" class="btn-outline">Детальніше</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Апартаменти з 2 спальнями -->
+        <div class="room-card">
+          <img src="img/2spal.jpg" alt="Апартаменти з двома спальнями">
+          <div class="room-card-body">
+            <h3>Апартаменти з 2 спальнями</h3>
+            <div class="room-capacity">👥 До 6 дорослих + 2 дітей</div>
+            <p class="room-desc">Вид на гори з балконів, студія з диваном, мінікухня з плитою, 2 санвузли.</p>
+            <div class="room-card-footer">
+              <div class="price-tag">від 5 400 ₴ <span>/ доба</span></div>
+              <a href="apart-2spal.html" class="btn-outline">Детальніше</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Апартаменти з 3 спальнями -->
+        <div class="room-card">
+          <img src="img/3spal.jpg" alt="Апартаменти з трьома спальнями">
+          <div class="room-card-body">
+            <h3>Апартаменти з 3 спальнями</h3>
+            <div class="room-capacity">👥 6 дорослих + 2 дітей</div>
+            <p class="room-desc">Простора кухня, панорамна вітальня, 3 великі спальні з двоспальними ліжками.</p>
+            <div class="room-card-footer">
+              <div class="price-tag">від 4 800 ₴ <span>/ доба</span></div>
+              <a href="apart-3spal.html" class="btn-outline">Детальніше</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. Шале з чаном -->
+        <div class="room-card">
+          <img src="img/chan.jpg" alt="Шале з власним чаном">
+          <div class="room-card-body">
+            <h3>Шале з власним чаном</h3>
+            <div class="room-capacity">👥 2 дорослих + 2 дітей</div>
+            <p class="room-desc">Власний чан на терасі з панорамою Карпат, мінікухня, санвузол.</p>
+            <div class="room-card-footer">
+              <div class="price-tag">від 4 000 ₴ <span>/ доба</span></div>
+              <a href="shale-chan.html" class="btn-outline">Детальніше</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. Панорамні апартаменти -->
+        <div class="room-card">
+          <img src="img/panoram.jpg" alt="Панорамні апартаменти">
+          <div class="room-card-body">
+            <h3>Панорамні апартаменти</h3>
+            <div class="room-capacity">👥 2 дорослих + 2 дітей</div>
+            <p class="room-desc">Панорамні вікна з краєвидом на гори Яремче, зона відпочинку, Smart TV.</p>
+            <div class="room-card-footer">
+              <div class="price-tag">від 4 000 ₴ <span>/ доба</span></div>
+              <a href="panoramny.html" class="btn-outline">Детальніше</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Кнопки керування та індикатори під слайдером -->
+      <div class="slider-controls">
+        <button class="slider-btn" onclick="slideRooms(-1)" aria-label="Назад">&#10094;</button>
+        <div class="slider-dots" id="sliderDots"></div>
+        <button class="slider-btn" onclick="slideRooms(1)" aria-label="Вперед">&#10095;</button>
+      </div>
+    </div>
+  </section>
+  <!-- Прайс-лист -->
+  <section class="section pricing-section" id="pricing" style="background: #111317;">
+    <div class="section-title">
+      <h2 style="font-size: 2.4rem; letter-spacing: 2px;">ПРАЙС ЛИСТ</h2>
+      <p style="color: #d1d5db; letter-spacing: 2px; margin-top: 5px;">ЦІНИ АКТУАЛЬНІ 28.09–1.11</p>
+    </div>
+
+    <div class="table-responsive" style="max-width: 1000px; margin: 0 auto;">
+      <table class="custom-table" style="text-align: center;">
+        <thead>
+          <tr style="border-bottom: 2px solid var(--border-gold);">
+            <th style="text-align: left; padding: 18px 20px;">Категорія номера</th>
+            <th style="padding: 18px 15px;">
+              <span style="display:block; font-size: 1rem; color: var(--accent-gold);">ПН–ЧТ</span>
+              <span style="font-size: 0.75rem; color: var(--text-muted); font-family: 'Montserrat', sans-serif;">2 і більше доби / доба</span>
+            </th>
+            <th style="padding: 18px 15px;">
+              <span style="display:block; font-size: 1rem; color: var(--accent-gold);">ПТ–НД</span>
+              <span style="font-size: 0.75rem; color: var(--text-muted); font-family: 'Montserrat', sans-serif;">2 і більше доби / доба</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody style="font-size: 0.95rem;">
+          <tr>
+            <td style="text-align: left;">
+              <strong style="color: #fff; font-size: 1.05rem;">Панорамний</strong>
+              <div style="font-size: 0.8rem; color: var(--accent-gold);">вміщує 2+ 2 дітей</div>
+            </td>
+            <td><strong>4 000</strong> / 4 200 ₴</td>
+            <td><strong>4 200</strong> / 4 400 ₴</td>
+          </tr>
+          <tr>
+            <td style="text-align: left;">
+              <strong style="color: #fff; font-size: 1.05rem;">Стандарт</strong>
+              <div style="font-size: 0.8rem; color: var(--accent-gold);">вміщує 2 дорослих</div>
+            </td>
+            <td><strong>2 600</strong> / 2 800 ₴</td>
+            <td><strong>2 800</strong> / 3 000 ₴</td>
+          </tr>
+          <tr>
+            <td style="text-align: left;">
+              <strong style="color: #fff; font-size: 1.05rem;">Мансарда</strong>
+              <div style="font-size: 0.8rem; color: var(--accent-gold);">вміщує 2+ 2 дітей</div>
+            </td>
+            <td><strong>3 100</strong> / 3 400 ₴</td>
+            <td><strong>3 300</strong> / 3 500 ₴</td>
+          </tr>
+          <tr>
+            <td style="text-align: left;">
+              <strong style="color: #fff; font-size: 1.05rem;">Апартаменти з трьома спальнями</strong>
+              <div style="font-size: 0.8rem; color: var(--accent-gold);">вміщує 6 + 2 дітей</div>
+            </td>
+            <td><strong>4 800</strong> / 5 500 ₴</td>
+            <td><strong>5 000</strong> / 5 700 ₴</td>
+          </tr>
+          <tr>
+            <td style="text-align: left;">
+              <strong style="color: #fff; font-size: 1.05rem;">Шале з власним чаном</strong>
+              <div style="font-size: 0.8rem; color: var(--accent-gold);">вміщує 2 + 2 дітей</div>
+              <div style="font-size: 0.7rem; color: #e57373;">* вартість чану не включено у проживання</div>
+            </td>
+            <td><strong>4 000</strong> / 4 200 ₴</td>
+            <td><strong>4 200</strong> / 4 500 ₴</td>
+          </tr>
+          <tr>
+            <td style="text-align: left;">
+              <strong style="color: #fff; font-size: 1.05rem;">Шале з двома спальнями</strong>
+              <div style="font-size: 0.8rem; color: var(--accent-gold);">вміщує 6 + 2 дітей</div>
+            </td>
+            <td><strong>5 800</strong> / 6 400 ₴</td>
+            <td><strong>6 000</strong> / 6 600 ₴</td>
+          </tr>
+          <tr>
+            <td style="text-align: left;">
+              <strong style="color: #fff; font-size: 1.05rem;">Шале з каміном (з однією спальнею)</strong>
+              <div style="font-size: 0.8rem; color: var(--accent-gold);">вміщує 4 + 1 дитина</div>
+            </td>
+            <td><strong>4 200</strong> / 4 400 ₴</td>
+            <td><strong>4 500</strong> / 4 700 ₴</td>
+          </tr>
+          <tr>
+            <td style="text-align: left;">
+              <strong style="color: #fff; font-size: 1.05rem;">Апартаменти з двома спальнями</strong>
+              <div style="font-size: 0.8rem; color: var(--accent-gold);">вміщує 5 + 2 дітей</div>
+            </td>
+            <td><strong>5 400</strong> / 5 600 ₴</td>
+            <td><strong>5 600</strong> / 6 000 ₴</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Блок про сніданки -->
+      <div style="margin-top: 35px; text-align: center; padding: 20px; border: 1px solid var(--border-gold); background: rgba(197, 168, 128, 0.05); border-radius: 6px;">
+        <h4 style="font-family: 'Cinzel', serif; color: var(--accent-gold); font-size: 1.1rem; margin-bottom: 6px;">ТАРИФ ЗІ СНІДАНКОМ</h4>
+        <p style="font-size: 0.95rem; color: #fff;">За попереднім бронюванням <strong>+200 ₴ / з особи за добу</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contacts">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3 class="font-serif">Guculka Apartments</h3>
+        <p>Готельний комплекс преміум-відпочинку в Яремче. Ваша гірська казка в атмосфері спокою та комфорту.</p>
+      </div>
+      <div class="footer-col">
+        <h3 class="font-serif">Адреса</h3>
+        <p>📍 вул. Вітовського, 74, м. Яремче, Івано-Франківська обл., 78500</p>
+        <a href="https://www.google.com/maps?q=Guculka+apartments" target="_blank" style="color: var(--accent-gold);">Відкрити на Google Maps →</a>
+      </div>
+      <div class="footer-col">
+        <h3 class="font-serif">Контакти</h3>
+        <a href="https://www.instagram.com/guculkaapartments/" target="_blank">📷 Instagram: @guculkaapartments</a>
+        <a href="https://t.me/" target="_blank">💬 Написати в Telegram</a>
+        <p>📞 Відділ бронювання: +380 (XX) XXX-XX-XX</p>
+      </div>
+    </div>
+    <div style="text-align: center; border-top: 1px solid var(--border-light); padding-top: 20px; font-size: 0.8rem; color: var(--text-muted);">
+      © 2026 Guculka Apartments. Усі права захищено.
+    </div>
+  </footer>
+
+  <!-- Booking Modal -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeBookingModal()">&times;</span>
+      <h3 class="font-serif" style="margin-bottom: 20px; color: var(--accent-gold);">Бронювання номера</h3>
+      <form onsubmit="submitBooking(event)">
+        <div class="form-group">
+          <label>Ваше ім'я</label>
+          <input type="text" name="name" class="form-control" placeholder="Іван Петренко" required>
+        </div>
+        <div class="form-group">
+          <label>Номер телефону</label>
+          <input type="tel" name="phone" class="form-control" placeholder="+380 XX XXX XX XX" required>
+        </div>
+        <div class="form-group">
+          <label>Категорія номера</label>
+          <select name="room" class="form-control">
+            <option value="Номер «Стандарт»">Номер «Стандарт»</option>
+            <option value="Номер «Мансарда»">Номер «Мансарда»</option>
+            <option value="Шале з каміном (1 спальня)">Шале з каміном (1 спальня)</option>
+            <option value="Шале з двома спальнями">Шале з двома спальнями</option>
+            <option value="Шале з власним чаном">Шале з власним чаном</option>
+            <option value="Апартаменти з двома спальнями">Апартаменти з 2 спальнями</option>
+            <option value="Апартаменти з трьома спальнями">Апартаменти з 3 спальнями</option>
+            <option value="Панорамні апартаменти">Панорамні апартаменти</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <div class="form-group" style="flex: 1;">
+            <label>Дата заїзду</label>
+            <input type="date" name="checkin" class="form-control" required>
+          </div>
+          <div class="form-group" style="flex: 1;">
+            <label>Дата виїзду</label>
+            <input type="date" name="checkout" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label><input type="checkbox" name="breakfast"> Включити смачний сніданок (+200 ₴/добу)</label>
+        </div>
+        <button type="submit" class="btn-gold" style="width: 100%; margin-top: 10px;">Надіслати заявку</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

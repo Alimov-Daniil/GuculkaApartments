@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Апартаменти з 3 спальнями | Guculka Apartments</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="index.html" class="logo-title font-serif">Guculka</a>
+      <span class="logo-sub">Apartments</span>
+    </div>
+    <a href="index.html#rooms" class="btn-outline">Усі номери</a>
+  </header>
+
+  <div class="single-room-header">
+    <a href="index.html#rooms" class="back-link">← Назад до каталогу</a>
+    <h1 class="font-serif">Апартаменти з трьома спальнями</h1>
+  </div>
+
+  <div class="room-detail-layout">
+    <div>
+      <img src="img/3spal.jpg" alt="Апартаменти з 3 спальнями" class="room-gallery-main">
+    </div>
+    <div class="room-specs">
+      <h2 class="specs-title">Опис номера</h2>
+      <div class="specs-capacity">👥 Вміщує: 6 дорослих + 2 дітей</div>
+
+      <div class="spec-block">
+        <h4>Зручності та оснащення</h4>
+        <ul class="spec-list">
+          <li>Повноцінна кухня з холодильником та варильною панеллю</li>
+          <li>Панорамна вітальня з м'якими меблями</li>
+          <li>Сучасний санвузол, фен, рушники</li>
+          <li>Smart TV та високошвидкісний Wi-Fi</li>
+        </ul>
+      </div>
+
+      <div class="spec-block">
+        <h4>Спальні місця</h4>
+        <ul class="spec-list">
+          <li><strong>1 спальня:</strong> двоспальне ліжко</li>
+          <li><strong>2 спальня:</strong> двоспальне ліжко</li>
+          <li><strong>3 спальня:</strong> двоспальне ліжко</li>
+          <li><strong>Вітальня:</strong> 1 двоспальний розкладний диван</li>
+        </ul>
+      </div>
+
+      <div class="booking-box">
+        <h3 class="font-serif" style="margin-bottom: 15px; color: var(--accent-gold);">Забронювати апартаменти</h3>
+        <p style="font-size: 0.9rem; margin-bottom: 15px;">Тариф: <strong>від 4 800 до 5 700 грн / доба</strong></p>
+        <form onsubmit="submitBooking(event)">
+          <input type="hidden" name="room" value="Апартаменти з трьома спальнями">
+          <div class="form-group">
+            <label>Ваше ім'я</label>
+            <input type="text" name="name" class="form-control" required placeholder="Олександр">
+          </div>
+          <div class="form-group">
+            <label>Телефон</label>
+            <input type="tel" name="phone" class="form-control" required placeholder="+380 XX XXX XX XX">
+          </div>
+          <div style="display: flex; gap: 10px;">
+            <div class="form-group" style="flex:1;">
+              <label>Заїзд</label>
+              <input type="date" name="checkin" class="form-control" required>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>Виїзд</label>
+              <input type="date" name="checkout" class="form-control" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-gold" style="width: 100%;">Забронювати відпочинок</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
