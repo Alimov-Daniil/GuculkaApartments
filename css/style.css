@@ -640,3 +640,61 @@ html {
     max-width: 85vw;
   }
 }
+/* 1. Макет сторінки номера */
+.room-detail-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr; /* Збалансоване співвідношення колонок */
+  gap: 40px;
+  padding: 0 5% 80px;
+  align-items: stretch; /* Важливо: тягне обидві колонки на однакову висоту */
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* 2. Ліва колонка (контейнер для фото) */
+.room-detail-layout > div:first-child {
+  position: relative;
+  width: 100%;
+  /* Розрахунок максимальної висоти, щоб на великих екранах фотка не ставала величезною */
+  max-height: 700px; 
+  display: flex;
+}
+
+/* 3. Сама фотографія (гарантоване 100% заповнення висоти правої сторони без смуг) */
+.room-gallery-main {
+  width: 100%;
+  height: 100%; /* Фотографія буде точно такої ж висоти, як і правий блок */
+  object-fit: cover; /* Заповнює площу повністю, підлаштовуючись під форму */
+  object-position: center;
+  border-radius: 8px;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* 4. Права колонка з текстом та формою */
+.room-specs {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  padding: 35px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Рівномірно розподіляє опис і форму всередині */
+}
+
+/* 5. Адаптивність для планшетів та смартфонів */
+@media (max-width: 992px) {
+  .room-detail-layout {
+    grid-template-columns: 1fr; /* Перехід в один ряд */
+    gap: 25px;
+  }
+  
+  .room-detail-layout > div:first-child {
+    max-height: 450px;
+    height: 450px;
+  }
+  
+  .room-gallery-main {
+    height: 100%;
+  }
+}
