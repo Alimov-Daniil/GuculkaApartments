@@ -698,3 +698,24 @@ html {
     height: 100%;
   }
 }
+.map-wrapper {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-gold);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  margin-top: 10px;
+}
+
+.map-wrapper iframe {
+  display: block;
+  width: 100%;
+  /* Стилізація під преміальний темний дизайн */
+  filter: invert(90%) hue-rotate(180deg) contrast(90%);
+  transition: filter 0.3s ease;
+}
+
+/* При наведенні курсора повертається звичайний колір карти */
+.map-wrapper:hover iframe {
+  filter: none;
+}
