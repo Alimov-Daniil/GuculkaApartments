@@ -1,11 +1,12 @@
-// Конфігурація для сповіщень у Telegram
-// Введіть свій токен бота та ID чату адміністратора
+// ==========================================
+// 1. КОНФІГУРАЦІЯ ТЕЛЕГРАМ ТА БРОНЮВАННЯ
+// ==========================================
 const TELEGRAM_CONFIG = {
   token: '', // наприклад: '123456789:AAFxxx...'
   chatId: '' // наприклад: '123456789' або ID групи
 };
 
-// Відкриття та закриття модальних вікон
+// Відкриття та закриття модального вікна
 function openBookingModal(roomName = '') {
   const modal = document.getElementById('bookingModal');
   if (modal) {
@@ -76,7 +77,7 @@ async function submitBooking(event) {
         form.reset();
         closeBookingModal();
       } else {
-        throw new Error('Помилка надсилання в Telegram');
+        throw new Error('Помилка відправки');
       }
     } catch (err) {
       alert('Заявку збережено! Менеджер отримає сповіщення.');
@@ -87,7 +88,6 @@ async function submitBooking(event) {
       submitBtn.innerText = 'Забронювати відпочинок';
     }
   } else {
-    // Якщо токен ще не вказано
     alert(`Дякуємо, ${data.name}! Ваша заявка на номер «${data.room}» прийнята. Адміністратор зателефонує вам на номер ${data.phone}.`);
     form.reset();
     closeBookingModal();
@@ -95,6 +95,10 @@ async function submitBooking(event) {
     submitBtn.innerText = 'Забронювати відпочинок';
   }
 }
+
+// ==========================================
+// 2. БЕЗКІНЕЧНИЙ СЛАЙДЕР З ПІДСВІЧУВАННЯМ
+// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
   initInfiniteRoomsSlider();
 });
@@ -105,11 +109,17 @@ function initInfiniteRoomsSlider() {
 
   if (!track || !dotsContainer) return;
 
+  // Отримуємо початкові картки номерів
   const originalCards = Array.from(track.querySelectorAll('.room-card'));
   const total = originalCards.length;
   if (total === 0) return;
 
-  // 1. Клонируем элементы в конец и в начало для бесшовного зацикливания
+  // Присвоюємо порядковий індекс кожній картці (0..total-1)
+  originalCards.forEach((card, idx) => {
+    card.setAttribute('data-index', idx);
+  });
+
+  // Клонуємо картки для створення безкінечного кола
   originalCards.forEach(card => {
     track.appendChild(card.cloneNode(true));
   });
@@ -117,74 +127,139 @@ function initInfiniteRoomsSlider() {
     track.insertBefore(card.cloneNode(true), track.firstChild);
   });
 
-  const getStep = () => {
-    const card = track.querySelector('.room-card');
-    return card ? card.offsetWidth + 24 : 364;
-  };
-
-  // 2. Устанавливаем начальную позицию на центральный оригинальный набор
-  const initialOffset = getStep() * total;
-  track.scrollLeft = initialOffset;
-
-  // 3. Создаем точки-индикаторы
+  // Генерація крапок знизу
   dotsContainer.innerHTML = '';
   for (let i = 0; i < total; i++) {
     const dot = document.createElement('div');
     dot.className = `slider-dot ${i === 0 ? 'active' : ''}`;
+    dot.setAttribute('data-dot-index', i);
     dot.addEventListener('click', () => {
-      const step = getStep();
-      track.scrollTo({ left: step * (total + i), behavior: 'smooth' });
+      scrollToIndex(i);
     });
     dotsContainer.appendChild(dot);
   }
 
-  // 4. Бесшовный скачок при достижении краев клонов
-  let isThrottled = false;
+  const getStep = () => {
+    const first = track.querySelector('.room-card');
+    return first ? first.offsetWidth + 26 : 366;
+  };
+
+  // Перемикання активної видовженої смужки-крапки
+  function setActiveDot(index) {
+    const dots = dotsContainer.querySelectorAll('.slider-dot');
+    dots.forEach((dot, idx) => {
+      dot.classList.toggle('active', idx === Number(index));
+    });
+  }
+
+  // Підсвічування картки та синхронізація нижньої крапки
+  function highlightCard(card) {
+    const all = track.querySelectorAll('.room-card');
+    all.forEach(c => c.classList.remove('active-room'));
+    card.classList.add('active-room');
+
+    const idx = card.getAttribute('data-index');
+    if (idx !== null) {
+      setActiveDot(idx);
+    }
+  }
+
+  // Плавний перехід до конкретного номера за кліком на крапку
+  function scrollToIndex(index) {
+    const all = Array.from(track.querySelectorAll('.room-card'));
+    const target = all.slice(total, total * 2).find(c => c.getAttribute('data-index') == index);
+    if (target) {
+      const trackCenter = track.offsetWidth / 2;
+      const cardCenter = target.offsetLeft + target.offsetWidth / 2;
+      track.scrollTo({
+        left: cardCenter - trackCenter,
+        behavior: 'smooth'
+      });
+      highlightCard(target);
+    }
+  }
+
+  // ПІДСВІЧУВАННЯ ПРИ НАВЕДЕННІ КУРСОРА (HOVER)
+  const allCards = track.querySelectorAll('.room-card');
+  allCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      highlightCard(card);
+    });
+  });
+
+  // Стартова позиція (перший номер по центру)
+  setTimeout(() => {
+    const all = Array.from(track.querySelectorAll('.room-card'));
+    const startCard = all.slice(total, total * 2)[0];
+    if (startCard) {
+      const trackCenter = track.offsetWidth / 2;
+      const cardCenter = startCard.offsetLeft + startCard.offsetWidth / 2;
+      track.scrollLeft = cardCenter - trackCenter;
+      highlightCard(startCard);
+    }
+  }, 100);
+
+  // СИНХРОНІЗАЦІЯ ПРИ СКРОЛІ
+  let isResetting = false;
   track.addEventListener('scroll', () => {
     const step = getStep();
     const currentScroll = track.scrollLeft;
     const baseWidth = step * total;
 
-    if (!isThrottled) {
-      if (currentScroll <= 10) {
-        isThrottled = true;
+    // Визначаємо, яка картка найближча до центру екрана
+    const trackRect = track.getBoundingClientRect();
+    const trackCenter = trackRect.left + trackRect.width / 2;
+    const currentCards = Array.from(track.querySelectorAll('.room-card'));
+    let closest = null;
+    let minDiff = Infinity;
+
+    currentCards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      const center = rect.left + rect.width / 2;
+      const diff = Math.abs(trackCenter - center);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = card;
+      }
+    });
+
+    if (closest) {
+      highlightCard(closest);
+    }
+
+    // Безшовний стрибок безкінечного кола
+    if (!isResetting) {
+      if (currentScroll <= 15) {
+        isResetting = true;
         track.style.scrollBehavior = 'auto';
         track.scrollLeft = currentScroll + baseWidth;
         track.style.scrollBehavior = 'smooth';
-        setTimeout(() => { isThrottled = false; }, 50);
+        setTimeout(() => { isResetting = false; }, 60);
       } else if (currentScroll >= baseWidth * 2) {
-        isThrottled = true;
+        isResetting = true;
         track.style.scrollBehavior = 'auto';
         track.scrollLeft = currentScroll - baseWidth;
         track.style.scrollBehavior = 'smooth';
-        setTimeout(() => { isThrottled = false; }, 50);
+        setTimeout(() => { isResetting = false; }, 60);
       }
     }
-
-    // Подсветка активной точки
-    const activeIndex = Math.round((track.scrollLeft - baseWidth) / step);
-    const normalizedIndex = ((activeIndex % total) + total) % total;
-    const dots = dotsContainer.querySelectorAll('.slider-dot');
-    dots.forEach((dot, idx) => {
-      dot.classList.toggle('active', idx === normalizedIndex);
-    });
   });
 
-  // 5. Перелистывание кнопками-стрелками
+  // Кнопки-стрілки (назад / вперед)
   window.slideRooms = function (direction) {
     const step = getStep();
     track.scrollBy({ left: direction * step, behavior: 'smooth' });
   };
 
-  // 6. Поддержка перетаскивания мышью (Drag-to-scroll)
+  // Перетягування мишкою (Drag-and-drop)
   let isDown = false;
   let startX = 0;
-  let scrollStart = 0;
+  let scrollLeft = 0;
 
   track.addEventListener('mousedown', (e) => {
     isDown = true;
     startX = e.pageX - track.offsetLeft;
-    scrollStart = track.scrollLeft;
+    scrollLeft = track.scrollLeft;
     track.style.scrollBehavior = 'auto';
   });
 
@@ -199,7 +274,49 @@ function initInfiniteRoomsSlider() {
     if (!isDown) return;
     e.preventDefault();
     const x = e.pageX - track.offsetLeft;
-    const walk = (x - startX) * 1.4;
-    track.scrollLeft = scrollStart - walk;
+    const walk = (x - startX) * 1.3;
+    track.scrollLeft = scrollLeft - walk;
   });
 }
+// Підтримка свайпів пальцем на смартфонах
+  let touchStartX = 0;
+  let touchScrollStart = 0;
+
+  track.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].pageX - track.offsetLeft;
+    touchScrollStart = track.scrollLeft;
+    track.style.scrollBehavior = 'auto';
+  }, { passive: true });
+
+  track.addEventListener('touchmove', (e) => {
+    const x = e.touches[0].pageX - track.offsetLeft;
+    const walk = (x - touchStartX) * 1.2;
+    track.scrollLeft = touchScrollStart - walk;
+  }, { passive: true });
+
+  track.addEventListener('touchend', () => {
+    track.style.scrollBehavior = 'smooth';
+  });
+  // --- РОЗУМНА ШАПКА (СХОВАТИСЯ ВНИЗ / З'ЯВИТИСЯ ВГОРУ) ---
+let lastScrollPosition = 0;
+const siteHeader = document.querySelector('header');
+
+window.addEventListener('scroll', () => {
+  const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+  // Якщо сторінка біля самого верху — шапка завжди на місці
+  if (currentScroll <= 60) {
+    siteHeader.classList.remove('header-hidden');
+    lastScrollPosition = currentScroll;
+    return;
+  }
+
+  // Якщо гортаємо вниз — ховаємо шапку, якщо вгору — повертаємо
+  if (currentScroll > lastScrollPosition && currentScroll > 120) {
+    siteHeader.classList.add('header-hidden');
+  } else {
+    siteHeader.classList.remove('header-hidden');
+  }
+
+  lastScrollPosition = currentScroll <= 0 ? 0 : currentScroll;
+}, { passive: true });
